@@ -74,3 +74,4 @@ fabric.properties
 # custom ignores
 node_modules/
 dist/
+requirements/
