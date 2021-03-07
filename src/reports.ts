@@ -1,5 +1,5 @@
 import { Database } from "sqlite";
-import { formatCurrency } from "./utils";
+import { formatCurrency, formatMileage } from "./utils";
 
 export interface ReportGenerator<T> {
   generate(): Promise<T>;
@@ -139,6 +139,9 @@ export class TopListingsByMonthReportGenerator
         mostContactedListingsInMonth[i]!.formattedPrice = formatCurrency(
           mostContactedListingsInMonth[i]!.price
         );
+        mostContactedListingsInMonth[i]!.formattedMileage = formatMileage(
+          mostContactedListingsInMonth[i]!.mileage
+        );
       }
 
       results.push(mostContactedListingsInMonth);
@@ -149,6 +152,7 @@ export class TopListingsByMonthReportGenerator
 }
 
 export interface TopListingsByMonthReport {
+  formattedMileage: string;
   formattedPrice: string;
   month: string;
   ranking: number;

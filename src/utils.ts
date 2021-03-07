@@ -12,7 +12,7 @@ export function flatArrayEquals<T>(arr1: Array<T>, arr2: Array<T>) {
   );
 }
 
-export function formatCurrency(currency: number) {
+function thousandSeparatorNumbers(currency: number) {
   const parts = [];
 
   if (currency < 0) {
@@ -32,6 +32,13 @@ export function formatCurrency(currency: number) {
       }
     }
   }
+  return parts.reverse().join(".");
+}
 
-  return "€ " + parts.reverse().join(".") + ",-";
+export function formatCurrency(currency: number) {
+  return "€ " + thousandSeparatorNumbers(currency) + ",-";
+}
+
+export function formatMileage(mileage: number) {
+  return thousandSeparatorNumbers(mileage) + " KM";
 }
