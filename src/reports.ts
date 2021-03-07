@@ -144,7 +144,6 @@ export class TopListingsByMonthReportGenerator
       results.push(mostContactedListingsInMonth);
     }
 
-    console.log(results);
     return results;
   }
 }
