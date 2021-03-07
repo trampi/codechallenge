@@ -1,6 +1,6 @@
 import { Database, open } from "sqlite";
 import sqlite3 from "sqlite3";
-import { configureConnection } from "./db-factory";
+import { configureConnection, initSchema } from "./db-factory";
 
 export async function initMemoryDB(): Promise<Database> {
   const db = await open({
@@ -8,5 +8,11 @@ export async function initMemoryDB(): Promise<Database> {
     filename: ":memory:",
   });
   await configureConnection(db);
+  return db;
+}
+
+export async function setupEmptyTestDBWithSchema(): Promise<Database> {
+  const db = await initMemoryDB();
+  await initSchema(db);
   return db;
 }

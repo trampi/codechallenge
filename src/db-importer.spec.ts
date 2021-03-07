@@ -1,7 +1,6 @@
 import { DbImporter } from "./db-importer";
 import { ContactRepository, ListingRepository } from "./repository";
-import { initMemoryDB } from "./test-helper";
-import { initSchema } from "./db-factory";
+import { setupEmptyTestDBWithSchema } from "./test-helper";
 import { Contact, Listing } from "./model";
 import { Database } from "sqlite";
 
@@ -12,8 +11,7 @@ describe("db-importer", () => {
   let dbImporter: DbImporter;
 
   beforeEach(async () => {
-    db = await initMemoryDB();
-    await initSchema(db);
+    db = await setupEmptyTestDBWithSchema();
     contactRepository = new ContactRepository(db);
     listingRepository = new ListingRepository(db);
     dbImporter = new DbImporter(listingRepository, contactRepository);
@@ -44,6 +42,15 @@ describe("db-importer", () => {
         },
       ];
       expect(rows).toEqual(expected);
+    });
+
+    it("should not import listing with unexpected columns", async () => {
+      await expectAsync(
+        dbImporter.tryImportCsv(
+          "id,make,price,mileage,seller_type,unexpected\n" +
+            " 1,BMW,35000,2000,dealer,sample"
+        )
+      ).toBeRejected();
     });
 
     it("should not import listing with negative id", async () => {
@@ -141,6 +148,14 @@ describe("db-importer", () => {
         },
       ];
       expect(rows).toEqual(expected);
+    });
+
+    it("should not import contacts with unexpected columns", async () => {
+      await expectAsync(
+        dbImporter.tryImportCsv(
+          "listing_id,contact_date,unexpected\n" + "1,1615110387574,test"
+        )
+      ).toBeRejected();
     });
 
     it("should not import contacts for non-existing listings", async () => {
