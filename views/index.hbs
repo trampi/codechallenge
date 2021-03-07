@@ -1,12 +1,72 @@
 <h1>Reports</h1>
 
 <h2>Average Listing Selling price per seller type</h2>
+<table>
+  <thead>
+  <th>Seller Type</th>
+  <th>Average in Euro</th>
+  </thead>
+  <tbody>
+  {{#each averageListingSellingPriceReport}}
+  <tr>
+    <td>{{@key}}</td>
+    <td>{{this.formattedAveragePrice}}</td>
+  </tr>
+  {{/each}}
+  </tbody>
+</table>
 
 <h2>Distribution (in percent) of available cars by Make</h2>
+<table>
+  <thead>
+  <th>Make</th>
+  <th>Distribution</th>
+  </thead>
+  <tbody>
+  {{#each carsByMakeReport}}
+    <tr>
+      <td>{{@key}}</td>
+      <td>{{this.formattedPercent}}</td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
 
 <h2>Average price of the 30% most contacted listings</h2>
+{{averagePriceReport.formattedAveragePrice}}
 
 <h2>The Top 5 most contacted listings per Month</h2>
+
+{{#each topListingsByMonthReport}}
+  {{this.0.month}}
+<table>
+  <thead>
+  <th>Ranking</th>
+  <th>Listing Id</th>
+  <th>Make</th>
+  <th>Selling Price</th>
+  <th>Mileage</th>
+  <th>Total Amount of contacts</th>
+  </thead>
+  <tbody>
+    {{#each this}}
+    <tr>
+      <td>{{this.ranking}}</td>
+      <td>{{this.listingId}}</td>
+      <td>{{this.make}}</td>
+      <td>{{this.formattedPrice}}</td>
+      <td>{{this.mileage}}</td>
+      <td>{{this.contactCount}}</td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
+  <hr />
+{{/each}}
+
+
+<h2>Upload new data</h2>
+<p>Listings can only be created, contacts are not checked for duplicates</p>
 
 <form method="POST" action="/upload" enctype="multipart/form-data">
   <input type="file" name="csv" />

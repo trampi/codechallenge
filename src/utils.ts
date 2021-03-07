@@ -11,3 +11,27 @@ export function flatArrayEquals<T>(arr1: Array<T>, arr2: Array<T>) {
     arr1.every((value, index) => value === arr2[index])
   );
 }
+
+export function formatCurrency(currency: number) {
+  const parts = [];
+
+  if (currency < 0) {
+    throw new Error("formatting negative numbers not supported");
+  }
+
+  if (currency === 0) {
+    parts.push(0);
+  } else {
+    while (currency > 0) {
+      const part = Math.floor(currency % 1000);
+      currency = Math.floor(currency / 1000);
+      if (currency > 0) {
+        parts.push(part.toString(10).padStart(3, "0"));
+      } else {
+        parts.push(part);
+      }
+    }
+  }
+
+  return "€ " + parts.reverse().join(".") + ",-";
+}
