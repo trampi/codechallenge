@@ -36,6 +36,12 @@ export class ContactRepository extends AbstractRepository<Contact> {
     let result = await this.db.get("SELECT COUNT(*) as count from contact");
     return result.count;
   }
+
+  async all(): Promise<Contact[]> {
+    return await this.db.all<Contact[]>(
+      "select listing_id as listingId, contact_date as contactDate from contact"
+    );
+  }
 }
 
 export class ListingRepository extends AbstractRepository<Listing> {
@@ -43,6 +49,12 @@ export class ListingRepository extends AbstractRepository<Listing> {
     await this.db.run(
       "INSERT INTO listing (id, make, price, mileage, seller_type) VALUES ($id, $make, $price, $mileage, $sellerType)",
       prependDollarToPropertNames(listing)
+    );
+  }
+
+  async all(): Promise<Listing[]> {
+    return await this.db.all<Listing[]>(
+      "select id, make, price, mileage, seller_type as sellerType from listing"
     );
   }
 }

@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import fileUpload from "express-fileupload";
 import { ContactRepository, ListingRepository } from "./repository";
-import { initDB, initSchema } from "./db-factory";
+import { initFileDB, initSchema } from "./db-factory";
 import { DbImporter } from "./db-importer";
 import { readFileSync } from "fs";
 
@@ -50,7 +50,7 @@ export async function main() {
 
   const port = 3000;
 
-  const db = await initDB();
+  const db = await initFileDB();
   const contactRepository = new ContactRepository(db);
   const listingRepository = new ListingRepository(db);
   const dbImporter = new DbImporter(listingRepository, contactRepository);

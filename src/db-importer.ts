@@ -58,6 +58,9 @@ export class DbImporter {
     if (!this.isValidSellerType(sellerType)) {
       throw new Error("invalid seller type: " + sellerType);
     }
+    if (!make || make.trim() === "") {
+      throw new Error("make has to be set");
+    }
 
     return {
       id,
